@@ -13,12 +13,13 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject[] clouds;
 	public GameObject[] tetrominos;
-	public GameObject[] holes;
+	public GameObject[] tetrominoPreviews;
 	public GameObject car;
 	public GameObject level = null; //holds the previous hole and all associated roads/tetrominos
 	public float roadHeight = -2f;
 
 	private int tetrominoIndex = 0;
+	private int tetrominoPreviewIndex = 1;
 
 	public bool game = false;
 
@@ -35,7 +36,11 @@ public class GameManager : MonoBehaviour {
 
 
 	void Start() {
-		//CreateNewLevel ();
+		//PlayerPrefs.DeleteAll ();
+		//for(int i = 0; i < 10; i ++) {
+		//	PlayerPrefs.SetString ("score" + (i + 1).ToString () + "name", "Aspiring Hole Filler");
+		//	PlayerPrefs.GetInt ("score" + (i + 1).ToString (), 0);
+		//}
 		startPoint = 12;
 		potHoleStart = startPoint + 24;
 		musicManager = GameObject.Find ("MusicManager").GetComponent<MusicManager> ();
@@ -51,8 +56,8 @@ public class GameManager : MonoBehaviour {
 	void Update() {
 		if (Input.GetButtonDown ("Exit")) {
 			HealthManager healthManager = GameObject.Find ("HealthManager").GetComponent<HealthManager> ();
-			healthManager.resetHolesCleared ();
-			healthManager.resetHealth ();
+			//healthManager.resetHolesCleared ();
+			//healthManager.resetHealth ();
 			SceneManager.LoadScene ("Main");
 		} else if (Input.GetButtonDown ("Vroom") && !game) {
 			fillSquadStartAnimation.SetActive (true);
@@ -118,7 +123,7 @@ public class GameManager : MonoBehaviour {
 			Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (startPoint + 5, startPoint + 60), Random.Range (0f, 10f), Random.Range(5, 15)), Quaternion.Euler(new Vector3(270f, 0, 0)));
 		}
 
-		SetStartPoints (45);
+		SetStartPoints (46);
 	}
 
 

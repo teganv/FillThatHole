@@ -1,21 +1,22 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\FillSquadStartAnimation.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HealthManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\GameManager.cs" Line="47" Column="93" />
-      <File FileName="Assets\Scripts\HealthManager.cs" Line="49" Column="24" />
-      <File FileName="Assets\Scripts\Car.cs" Line="37" Column="21" />
-      <File FileName="Assets\Scripts\Tetromino.cs" Line="26" Column="37" />
-      <File FileName="Assets\Scripts\EndingScreenController.cs" Line="22" Column="34" />
+      <File FileName="Assets\Scripts\HealthManager.cs" Line="40" Column="4" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\NameEntry.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Car.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ChassisColliderScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tetromino.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\EndingScreenController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\TitleScreenController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ChassisColliderScript.cs" Line="15" Column="84" />
-      <File FileName="Assets\Scripts\MusicManager.cs" Line="37" Column="1" />
-      <File FileName="Assets\Scripts\Hole.cs" Line="7" Column="68" />
-      <File FileName="Assets\Scripts\CameraTargetHole.cs" Line="35" Column="93" />
-      <File FileName="Assets\Scripts\Cloud.cs" Line="22" Column="24" />
-      <File FileName="Assets\Scripts\Wiggler.cs" Line="5" Column="1" />
-      <File FileName="Assets\Scripts\ParticleDestroyer.cs" Line="19" Column="48" />
-      <File FileName="Assets\FillSquadStartAnimation.cs" Line="20" Column="142" />
+      <File FileName="Assets\Scripts\MusicManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Hole.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraTargetHole.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Cloud.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Wiggler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ParticleDestroyer.cs" Line="1" Column="1" />
+      <File FileName="Assets\FillSquadStartAnimation.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

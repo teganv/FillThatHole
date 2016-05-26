@@ -5,48 +5,39 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour {
 
+	private AudioSource source;
+
 	public float carHealth = 400f;
 	public GameObject healthBar;
 
-	public int holesCleared = 0;
+	private int holesCleared = 0;
 
 	private Vector3 cameraStartRotation;
-	private float healthBarStartingXScale;
-
 	public Text holesClearedText;
 
-	/*public static HealthManager instance = null;
+	private string nextScene = "End";
 
-	public void Awake()
-	{
-		if (instance == null) {
-			instance = this;
-		}
-		else if (instance != this)
-			Destroy (gameObject);
-	}*/
 
 	void Start () {
+		source = GetComponent<AudioSource> ();
 		healthBar = GameObject.Find ("HealthBar");
-		healthBarStartingXScale = healthBar.transform.localScale.x;
 		cameraStartRotation = new Vector3 (Camera.main.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
 		UpdateHealthBar ();
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-	}
 
 	public void loseHealth(float healthLost) {
 		carHealth -= healthLost;
 		UpdateHealthBar ();
 		if (carHealth <= 0f) {
+			//UpdateHighScores ();	
+			//StartCoroutine (EndGame ());
 			carHealth = 400;
 			PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
 			SceneManager.LoadScene (2);
 			UpdateHighScores ();
+
 		}
 		//Shake health bar
 		StartCoroutine(shakeHealthBar(healthLost));
@@ -56,28 +47,32 @@ public class HealthManager : MonoBehaviour {
 		var highScoreFound = false;
 		//iterate through PlayerPrefs high scores
 		for (int i = 0; i < 10; i++) {
-			if (holesCleared > PlayerPrefs.GetInt ("score" + (i + 1).ToString ())) {
-				if (!highScoreFound) {
-					//if this score is higher than one of them, this score is that new high score and set PlayerPrefs "newScore" to that high score position 
-					string[] curNames = new string[11];
-					int[] curScores = new int[11];
-					for (int j = i; j < 10; j++) {
-						curScores [j + 1] = PlayerPrefs.GetInt (("score" + (j + 1).ToString()));
-						curNames[j + 1] = PlayerPrefs.GetString(("score" + (j + 1).ToString () + "name"));
-					}
-					for (int j = i; j < 10; j++) {
-						PlayerPrefs.SetInt ("score" + (j + 2).ToString (), curScores [j + 1]);
-						PlayerPrefs.SetString ("score" + (j + 2).ToString () + "name", curNames[j + 1]);
-					}
-					PlayerPrefs.SetInt ("score" + (i + 1).ToString (), holesCleared);
-					PlayerPrefs.SetInt ("newScore", (i + 1)); 	//(this will be used to put the name in the right spot on the name entry screen)
-					SceneManager.LoadScene("HighScoreEntry");
-					highScoreFound = true;
-					break;
+			if (holesCleared > PlayerPrefs.GetInt ("score" + (i + 1).ToString (), 0) && !highScoreFound) {
+				//if this score is higher than one of them, this score is that new high score and set PlayerPrefs "newScore" to that high score position 
+				string[] curNames = new string[11];
+				int[] curScores = new int[11];
+				for (int j = i; j < 10; j++) {
+					curScores [j + 1] = PlayerPrefs.GetInt (("score" + (j + 1).ToString ()));
+					curNames [j + 1] = PlayerPrefs.GetString (("score" + (j + 1).ToString () + "name"));
 				}
+				for (int k = i; k < 10; k++) {
+					PlayerPrefs.SetInt ("score" + (k + 2).ToString (), curScores [k + 1]);
+					print("Setting score number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
+					PlayerPrefs.SetString ("score" + (k + 2).ToString () + "name", curNames [k + 1]);
+					print("Setting name number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
+				}
+				PlayerPrefs.SetInt ("score" + (i + 1).ToString (), holesCleared);
+				print("Setting new high score spot #" + (i + 2).ToString() + " to " + holesCleared.ToString());
+				PlayerPrefs.SetInt ("newScore", (i + 1)); 	//(this will be used to put the name in the right spot on the name entry screen)
+				print("Name number " + (i + 1).ToString() + " will be written over");
+				//nextScene = "HighScoreEntry";
+				SceneManager.LoadScene ("HighScoreEntry");
+
+				highScoreFound = true;
+				break;
 			}
 		}
-		holesCleared = 0;
+		//holesCleared = 0;
 	}
 
 	public void UpdateHealthBar() {
@@ -93,9 +88,9 @@ public class HealthManager : MonoBehaviour {
 		return holesCleared;
 	}
 
-	public void resetHolesCleared() {
-		holesCleared = 0;
-	}
+	//public void resetHolesCleared() {
+	//	holesCleared = 0;
+	//}
 
 	public void resetHealth() {
 		carHealth = 400f;
@@ -116,4 +111,13 @@ public class HealthManager : MonoBehaviour {
 		healthBar.transform.localRotation = Quaternion.identity;
 		yield break;
 	}
+
+	private IEnumerator EndGame() {
+		PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
+		source.Play();
+		GameObject.Find ("car").GetComponent<Car> ().Explode ();
+		yield return new WaitForSeconds (3);
+		SceneManager.LoadScene (nextScene);
+	}
+
 }

@@ -9,10 +9,15 @@ public class EndingScreenController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		/*PlayerPrefs.DeleteAll ();
+		for(int i = 0; i < 10; i ++) {
+			PlayerPrefs.SetString ("score" + (i + 1).ToString () + "name", "Aspiring Hole Filler");
+			PlayerPrefs.SetInt ("score" + (i + 1).ToString (), 10 - i);
+		}*/
 		int holes = PlayerPrefs.GetInt ("Holes Cleared");
 		GetComponent<Text> ().text = "You cleared " + holes + "\nholes before\nascending";
 		for(int i = 0; i < 10; i ++) {
-			scoreTexts [i].text = (i + 1).ToString () + ". " + PlayerPrefs.GetString ("score" + (i + 1).ToString () + "name") + " - " + PlayerPrefs.GetInt ("score" + (i + 1).ToString ()) + " Holes";
+			scoreTexts [i].text = (i + 1).ToString () + ". " + PlayerPrefs.GetString ("score" + (i + 1).ToString () + "name", "nope") + " - " + PlayerPrefs.GetInt ("score" + (i + 1).ToString (), 0) + " Holes";
 		}
 	}
 	
@@ -24,6 +29,5 @@ public class EndingScreenController : MonoBehaviour {
 
 	void OnApplicationQuit() {
 		PlayerPrefs.SetInt ("Holes Cleared", 0);
-		PlayerPrefs.SetFloat ("Car Speed", 1.5f);
 	}
 }

@@ -11,6 +11,9 @@ public class Car : MonoBehaviour {
 	private Rigidbody2D rb;
 
 	private HealthManager healthManager;
+	public GameObject particles;
+
+	public bool alive = true;
 
 
 
@@ -31,10 +34,12 @@ public class Car : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		rb.velocity = new Vector2 (speed, rb.velocity.y);
+		if (alive) {
+			rb.velocity = new Vector2 (speed, rb.velocity.y);
 
-		if (speedUp) {
-			rb.velocity = new Vector2 (12f, rb.velocity.y);
+			if (speedUp) {
+				rb.velocity = new Vector2 (12f, rb.velocity.y);
+			}
 		}
 			
 	}
@@ -60,8 +65,13 @@ public class Car : MonoBehaviour {
 			speedUp = false;
 			Destroy (coll.gameObject);
 		}
-			
+	}
 
+
+	public void Explode() {
+		alive = false;
+		particles.SetActive (true);
+		rb.velocity = new Vector2 (0f, 40f);
 	}
 
 }

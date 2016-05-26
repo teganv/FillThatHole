@@ -25,6 +25,6 @@ public class ChassisColliderScript : MonoBehaviour {
 		audioSource.pitch = Random.Range (.85f, 1.1f);
 		parentRb.AddForce (new Vector2(0, 500f));
 		healthManager.loseHealth(coll.relativeVelocity.magnitude);
-		audioSource.PlayOneShot(crashClips[Random.Range(0, crashClips.Length - 1)]);
+		audioSource.PlayOneShot(crashClips[Random.Range(0, crashClips.Length)]);
 	}
 }
