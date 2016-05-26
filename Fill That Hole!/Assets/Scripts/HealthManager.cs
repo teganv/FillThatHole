@@ -8,6 +8,7 @@ public class HealthManager : MonoBehaviour {
 	private AudioSource source;
 
 	public float carHealth = 400f;
+	public bool alive = true;
 	public GameObject healthBar;
 
 	private int holesCleared = 0;
@@ -20,7 +21,6 @@ public class HealthManager : MonoBehaviour {
 
 	void Start () {
 		source = GetComponent<AudioSource> ();
-		healthBar = GameObject.Find ("HealthBar");
 		cameraStartRotation = new Vector3 (Camera.main.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
 		UpdateHealthBar ();
 
@@ -30,13 +30,14 @@ public class HealthManager : MonoBehaviour {
 	public void loseHealth(float healthLost) {
 		carHealth -= healthLost;
 		UpdateHealthBar ();
-		if (carHealth <= 0f) {
-			//UpdateHighScores ();	
-			//StartCoroutine (EndGame ());
-			carHealth = 400;
-			PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
-			SceneManager.LoadScene (2);
-			UpdateHighScores ();
+		if (carHealth <= 0f && alive) {
+			alive = false;
+			UpdateHighScores ();	
+			StartCoroutine (EndGame ());
+			//carHealth = 400;
+			//PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
+			//SceneManager.LoadScene ("End");
+			//UpdateHighScores ();
 
 		}
 		//Shake health bar
@@ -66,7 +67,7 @@ public class HealthManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("newScore", (i + 1)); 	//(this will be used to put the name in the right spot on the name entry screen)
 				print("Name number " + (i + 1).ToString() + " will be written over");
 				//nextScene = "HighScoreEntry";
-				SceneManager.LoadScene ("HighScoreEntry");
+				nextScene = "HighScoreEntry";
 
 				highScoreFound = true;
 				break;

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject flatGround;
 	public GameObject titleLogo;
 	private TitleLogo logoScript;
+	public GameObject healthBar;
+	public GameObject speedSign;
 
 	public GameObject[] clouds;
 	public GameObject[] tetrominos;
@@ -43,7 +46,7 @@ public class GameManager : MonoBehaviour {
 		//	PlayerPrefs.SetString ("score" + (i + 1).ToString () + "name", "Aspiring Hole Filler");
 		//	PlayerPrefs.GetInt ("score" + (i + 1).ToString (), 0);
 		//}
-
+	
 		logoScript = titleLogo.GetComponent<TitleLogo> ();
 		startPoint = 12;
 		potHoleStart = startPoint + 24;
@@ -64,7 +67,8 @@ public class GameManager : MonoBehaviour {
 			//healthManager.resetHealth ();
 			SceneManager.LoadScene ("Main");
 		} else if (Input.GetButtonDown ("Vroom") && !game) {
-			logoScript.Spin ();
+			healthBar.SetActive (true);
+			logoScript.GetComponent<Animator>().SetBool("spin", true);
 			fillSquadStartAnimation.SetActive (true);
 			musicManager.playChant ();
 			SetStartPoints (-20);
@@ -82,6 +86,10 @@ public class GameManager : MonoBehaviour {
 
 	//creates new flat ground for the car to ride on before the game starts. Includes a trigger that will spawn more.
 	public void CreateNewFlatGround() {
+		int numClouds = Random.Range (3, 6);
+		for (int i = 0; i < numClouds; i++) {
+			Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (startPoint, startPoint + 20), Random.Range (0f, 10f), Random.Range(5, 15)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+		}
 		print ("making new ground");
 		Instantiate (flatGround, new Vector3 (startPoint, roadHeight, 0), Quaternion.identity);
 		SetStartPoints (12);
@@ -102,6 +110,8 @@ public class GameManager : MonoBehaviour {
 
 		level = new GameObject ("Level" + healthManager.getHolesCleared ().ToString ()); 
 		Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
+		GameObject sign = Instantiate (speedSign, new Vector3(startPoint + 15, roadHeight, 3), Quaternion.Euler(0, 0, Random.Range(-15, 15))) as GameObject;
+		sign.GetComponentsInChildren<TextMesh> () [1].text = (healthManager.getHolesCleared () + 1).ToString();
 
 		GameObject groundBeforeHole = Instantiate (groundLine);
 		groundBeforeHole.transform.parent = level.transform;

@@ -3,17 +3,9 @@ using System.Collections;
 
 public class TitleLogo : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void Spin() {
+		StopAllCoroutines ();
 		StartCoroutine (SpinAwayFromTitle ());
 	}
 
@@ -26,4 +18,5 @@ public class TitleLogo : MonoBehaviour {
 		}
 		transform.eulerAngles = to;
 	}
+
 }
