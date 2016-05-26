@@ -1,0 +1,168 @@
+fileFormatVersion: 2
+guid: 7dd6ff66eb50a454bac293b240d7c4b7
+timeCreated: 1460857471
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: //RootNode
+    100004: Car_Chassis
+    100006: Car_Master
+    100008: Car_Wheels
+    100010: Car_Wheels_Front_L
+    100012: Car_Wheels_Front_R
+    100014: Car_Wheels_Rear_L
+    100016: Car_Wheels_Rear_R
+    100018: Chassis
+    100020: Wheel_Front_L
+    100022: Wheel_Front_R
+    100024: Wheel_Rear_L
+    100026: Wheel_Rear_R
+    400000: Armature
+    400002: //RootNode
+    400004: Car_Chassis
+    400006: Car_Master
+    400008: Car_Wheels
+    400010: Car_Wheels_Front_L
+    400012: Car_Wheels_Front_R
+    400014: Car_Wheels_Rear_L
+    400016: Car_Wheels_Rear_R
+    400018: Chassis
+    400020: Wheel_Front_L
+    400022: Wheel_Front_R
+    400024: Wheel_Rear_L
+    400026: Wheel_Rear_R
+    4300000: Wheel_Rear_L
+    4300002: Wheel_Rear_R
+    4300004: Wheel_Front_L
+    4300006: Chassis
+    4300008: Wheel_Front_R
+    7400000: Car Wiggle
+    7400002: ArmatureAction_005
+    9500000: //RootNode
+    13700000: Chassis
+    13700002: Wheel_Front_L
+    13700004: Wheel_Front_R
+    13700006: Wheel_Rear_L
+    13700008: Wheel_Rear_R
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Car Wiggle
+      takeName: Default Take
+      firstFrame: 0
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Car_Master
+        weight: 1
+      - path: Armature/Car_Master/Car_Chassis
+        weight: 1
+      - path: Armature/Car_Master/Car_Wheels
+        weight: 1
+      - path: Armature/Car_Master/Car_Wheels/Car_Wheels_Front_L
+        weight: 1
+      - path: Armature/Car_Master/Car_Wheels/Car_Wheels_Front_R
+        weight: 1
+      - path: Armature/Car_Master/Car_Wheels/Car_Wheels_Rear_L
+        weight: 1
+      - path: Armature/Car_Master/Car_Wheels/Car_Wheels_Rear_R
+        weight: 1
+      - path: Chassis
+        weight: 1
+      - path: Wheel_Front_L
+        weight: 1
+      - path: Wheel_Front_R
+        weight: 1
+      - path: Wheel_Rear_L
+        weight: 1
+      - path: Wheel_Rear_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

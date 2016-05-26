@@ -1,0 +1,141 @@
+fileFormatVersion: 2
+guid: 7f3217ab70a62a644a16a1e0575d2e1d
+timeCreated: 1460789960
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: //RootNode
+    100004: Car.Chassis
+    100006: Car.Chassis_end
+    100008: Car.Master
+    100010: Car.Wheels
+    100012: Car.Wheels_end
+    100014: Chassis
+    100016: Wheel.Front.L
+    100018: Wheel.Front.R
+    100020: Wheel.Rear,R
+    100022: Wheel.Rear.L
+    400000: Armature
+    400002: //RootNode
+    400004: Car.Chassis
+    400006: Car.Chassis_end
+    400008: Car.Master
+    400010: Car.Wheels
+    400012: Car.Wheels_end
+    400014: Chassis
+    400016: Wheel.Front.L
+    400018: Wheel.Front.R
+    400020: Wheel.Rear,R
+    400022: Wheel.Rear.L
+    2300000: Wheel.Front.L
+    2300002: Wheel.Front.R
+    2300004: Wheel.Rear,R
+    2300006: Wheel.Rear.L
+    3300000: Wheel.Front.L
+    3300002: Wheel.Front.R
+    3300004: Wheel.Rear,R
+    3300006: Wheel.Rear.L
+    4300000: Chassis
+    4300002: Wheel.Rear.L
+    4300004: Wheel.Front.L
+    4300006: Wheel.Rear,R
+    4300008: Wheel.Front.R
+    7400000: Armature|ArmatureAction
+    7400002: Armature|ChassisAction
+    7400004: Armature|Wheel.Front.LAction
+    7400006: Armature|Wheel.Front.RAction
+    7400008: Armature|Wheel.Rear,RAction
+    7400010: Armature|Wheel.Rear.LAction
+    7400012: Chassis|ChassisAction
+    7400014: Chassis|Wheel.Front.LAction
+    7400016: Chassis|Wheel.Front.RAction
+    7400018: Chassis|Wheel.Rear,RAction
+    7400020: Chassis|Wheel.Rear.LAction
+    7400022: Wheel.Rear.L|ChassisAction
+    7400024: Wheel.Rear.L|Wheel.Front.LAction
+    7400026: Wheel.Rear.L|Wheel.Front.RAction
+    7400028: Wheel.Rear.L|Wheel.Rear,RAction
+    7400030: Wheel.Rear.L|Wheel.Rear.LAction
+    7400032: Wheel.Front.L|ChassisAction
+    7400034: Wheel.Front.L|Wheel.Front.LAction
+    7400036: Wheel.Front.L|Wheel.Front.RAction
+    7400038: Wheel.Front.L|Wheel.Rear,RAction
+    7400040: Wheel.Front.L|Wheel.Rear.LAction
+    7400042: Wheel.Rear,R|ChassisAction
+    7400044: Wheel.Rear,R|Wheel.Front.LAction
+    7400046: Wheel.Rear,R|Wheel.Front.RAction
+    7400048: Wheel.Rear,R|Wheel.Rear,RAction
+    7400050: Wheel.Rear,R|Wheel.Rear.LAction
+    7400052: Wheel.Front.R|ChassisAction
+    7400054: Wheel.Front.R|Wheel.Front.LAction
+    7400056: Wheel.Front.R|Wheel.Front.RAction
+    7400058: Wheel.Front.R|Wheel.Rear,RAction
+    7400060: Wheel.Front.R|Wheel.Rear.LAction
+    9500000: //RootNode
+    13700000: Chassis
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
