@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject ground; //the blocks that go at the bottom of the hole
 	public GameObject endTrigger, vroomCancelTrigger;
 	public GameObject flatGround;
+	public GameObject titleLogo;
+	private TitleLogo logoScript;
 
 	public GameObject[] clouds;
 	public GameObject[] tetrominos;
@@ -41,6 +43,8 @@ public class GameManager : MonoBehaviour {
 		//	PlayerPrefs.SetString ("score" + (i + 1).ToString () + "name", "Aspiring Hole Filler");
 		//	PlayerPrefs.GetInt ("score" + (i + 1).ToString (), 0);
 		//}
+
+		logoScript = titleLogo.GetComponent<TitleLogo> ();
 		startPoint = 12;
 		potHoleStart = startPoint + 24;
 		musicManager = GameObject.Find ("MusicManager").GetComponent<MusicManager> ();
@@ -60,6 +64,7 @@ public class GameManager : MonoBehaviour {
 			//healthManager.resetHealth ();
 			SceneManager.LoadScene ("Main");
 		} else if (Input.GetButtonDown ("Vroom") && !game) {
+			logoScript.Spin ();
 			fillSquadStartAnimation.SetActive (true);
 			musicManager.playChant ();
 			SetStartPoints (-20);
@@ -194,4 +199,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject GetActiveHole() {
 		return activeHole;
 	}
+
+
 }

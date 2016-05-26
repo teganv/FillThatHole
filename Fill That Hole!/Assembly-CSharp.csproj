@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\TitleScreenController.cs" />
      <Compile Include="Assets\Scripts\WheelRotator.cs" />
      <Compile Include="Assets\Scripts\Wiggler.cs" />
+     <Compile Include="Assets\TitleLogo.cs" />
      <None Include="Assets\UCLAGameLab\Wireframe\Shaders\UCLA GameLab Wireframe Functions.cginc" />
      <None Include="Assets\UCLAGameLab\Wireframe\Shaders\UCLA GameLab Wireframe.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
