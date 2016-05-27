@@ -7,6 +7,7 @@ public class ChassisColliderScript : MonoBehaviour {
 	public AudioClip[] crashClips;
 	private AudioSource audioSource;
 	private HealthManager healthManager;
+	private bool justCollided = false;
 
 
 	// Use this for initialization
@@ -23,8 +24,19 @@ public class ChassisColliderScript : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		audioSource.pitch = Random.Range (.85f, 1.1f);
-		parentRb.AddForce (new Vector2(0, 500f));
-		healthManager.loseHealth(coll.relativeVelocity.magnitude);
+		//parentRb.AddForce (new Vector2(0, 500f));
+		if (!justCollided) {
+			justCollided = true;
+			StartCoroutine (ResetCollisionTimer ());
+			parentRb.AddForce (new Vector2(0, 850f));
+			healthManager.loseHealth(Mathf.Min(coll.relativeVelocity.magnitude, 25f));
+		}
 		audioSource.PlayOneShot(crashClips[Random.Range(0, crashClips.Length)]);
+	}
+
+	private IEnumerator ResetCollisionTimer() {
+		yield return new WaitForSeconds (.05f);
+		justCollided = false;
+		yield return null;
 	}
 }

@@ -11,6 +11,8 @@ public class HealthManager : MonoBehaviour {
 	public bool alive = true;
 	public GameObject healthBar;
 
+	public GameObject slideToBlackAnim;
+
 	private int holesCleared = 0;
 
 	private Vector3 cameraStartRotation;
@@ -114,6 +116,7 @@ public class HealthManager : MonoBehaviour {
 	}
 
 	private IEnumerator EndGame() {
+		slideToBlackAnim.SetActive (true);
 		PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
 		source.Play();
 		GameObject.Find ("car").GetComponent<Car> ().Explode ();
