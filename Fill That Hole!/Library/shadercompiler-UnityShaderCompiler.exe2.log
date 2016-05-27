@@ -8,3 +8,6 @@ Cmd: compileSnippet
   api=8 type=1 insize=1705 outsize=633 kw=SOFTPARTICLES_OFF pd=UNITY_NO_LINEAR_COLORSPACE UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF3 ok=1
 Cmd: compileSnippet
   api=8 type=1 insize=1705 outsize=765 kw=FOG_LINEAR SOFTPARTICLES_OFF pd=UNITY_NO_LINEAR_COLORSPACE UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF3 ok=1
+Unhandled exception: Protocol error - failed to read correct magic number
+
+Quitting shader compiler process

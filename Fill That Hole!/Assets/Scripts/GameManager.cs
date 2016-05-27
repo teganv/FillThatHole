@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 	private TitleLogo logoScript;
 	public GameObject healthBar;
 	public GameObject speedSign;
+	public GameObject controlsText;
 
 	public GameObject[] clouds;
 	public GameObject[] tetrominos;
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour {
 			//healthManager.resetHealth ();
 			SceneManager.LoadScene ("Main");
 		} else if (Input.GetButtonDown ("Vroom") && !game) {
+			controlsText.SetActive (false);
 			healthBar.SetActive (true);
 			logoScript.GetComponent<Animator>().SetBool("spin", true);
 			fillSquadStartAnimation.SetActive (true);
@@ -75,6 +77,9 @@ public class GameManager : MonoBehaviour {
 			game = true;
 			Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
 			CreateNewLevel ();
+		}
+		if (Input.GetButtonDown ("Shift") && !game) {
+			SceneManager.LoadScene ("KeyboardControls");
 		}
 	}
 
@@ -112,6 +117,7 @@ public class GameManager : MonoBehaviour {
 		Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
 		GameObject sign = Instantiate (speedSign, new Vector3(startPoint + 15, roadHeight, 3), Quaternion.Euler(0, 0, Random.Range(-15, 15))) as GameObject;
 		sign.GetComponentsInChildren<TextMesh> () [1].text = (healthManager.getHolesCleared () + 1).ToString();
+		sign.transform.parent = level.transform;
 
 		GameObject groundBeforeHole = Instantiate (groundLine);
 		groundBeforeHole.transform.parent = level.transform;
