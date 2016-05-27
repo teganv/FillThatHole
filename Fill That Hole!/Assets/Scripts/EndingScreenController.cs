@@ -7,6 +7,8 @@ public class EndingScreenController : MonoBehaviour {
 
 	public Text[] scoreTexts;
 
+	public GameObject screenExitWipeTransition;
+
 	// Use this for initialization
 	void Start () {
 		/*PlayerPrefs.DeleteAll ();
@@ -23,11 +25,17 @@ public class EndingScreenController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown ("Drop") || Input.GetButtonDown("Vroom") || Input.GetButtonDown("Shift"))
-			SceneManager.LoadScene ("Main");
+		if (Input.GetButtonDown ("Drop") || Input.GetButtonDown ("Vroom") || Input.GetButtonDown ("Shift"))
+			StartCoroutine (TransitionToMainScene ());
 	}
 
 	void OnApplicationQuit() {
 		PlayerPrefs.SetInt ("Holes Cleared", 0);
+	}
+
+	private IEnumerator TransitionToMainScene() {
+		screenExitWipeTransition.SetActive (true);
+		yield return new WaitForSeconds (2f);
+		SceneManager.LoadScene ("Main");
 	}
 }

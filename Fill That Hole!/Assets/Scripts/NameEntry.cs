@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class NameEntry : MonoBehaviour {
 	public InputField inputField;
 
+	public GameObject screenExitWipeTransition;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -15,7 +17,13 @@ public class NameEntry : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Return)) {
 			PlayerPrefs.SetString ("score" + PlayerPrefs.GetInt ("newScore").ToString () + "name", inputField.text);
-			SceneManager.LoadScene ("End");
+			StartCoroutine (TransitionToEndScene());
 		}
+	}
+
+	private IEnumerator TransitionToEndScene() {
+		screenExitWipeTransition.SetActive (true);
+		yield return new WaitForSeconds (2f);
+		SceneManager.LoadScene ("End");
 	}
 }

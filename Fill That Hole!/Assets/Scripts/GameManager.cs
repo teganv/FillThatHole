@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour {
 		hole.transform.position = new Vector3(potHoleStart+.5f, roadHeight, 0f);
 		Hole holeScript = hole.AddComponent<Hole> ();
 		hole.AddComponent<MeshRenderer> ();
-		int width = Random.Range (4, 10);
+		int width = Random.Range (5, 10);
 		holeScript.blockWidth = width;
 		for (int i = 0; i < width; i++) {
 			for (int k = 0; k < 15; k++) {

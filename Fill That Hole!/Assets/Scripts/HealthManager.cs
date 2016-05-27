@@ -116,11 +116,12 @@ public class HealthManager : MonoBehaviour {
 	}
 
 	private IEnumerator EndGame() {
-		slideToBlackAnim.SetActive (true);
 		PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
 		source.Play();
 		GameObject.Find ("car").GetComponent<Car> ().Explode ();
-		yield return new WaitForSeconds (3);
+		yield return new WaitForSeconds (1);
+		slideToBlackAnim.SetActive (true);
+		yield return new WaitForSeconds (2);
 		SceneManager.LoadScene (nextScene);
 	}
 
