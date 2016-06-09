@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject groundLine;
 	public GameObject fillSquadStartAnimation;
-	private float potHoleStart; //note: changing this in the editor will do nothing
+	private float potHoleStart;
 	private float startPoint; //Where the previous level ended and where the next will begin
 
 	private GameObject activeHole; //the current hole
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
 
 
 	void Start() {
+		//Uncomment to reset high scores
 		//PlayerPrefs.DeleteAll ();
 		//for(int i = 0; i < 10; i ++) {
 		//	PlayerPrefs.SetString ("score" + (i + 1).ToString () + "name", "Aspiring Hole Filler");
@@ -180,6 +181,11 @@ public class GameManager : MonoBehaviour {
 
 
 	public GameObject spawnHole() {
+		int holesCleared = healthManager.getHolesCleared ();
+		int levelsClearedLog = 1;
+		if (holesCleared != 0)
+			levelsClearedLog = Mathf.CeilToInt(Mathf.Log(holesCleared, 2f));
+		print (levelsClearedLog.ToString ());
 		GameObject hole = new GameObject("Hole");
 		GameObject grid = new GameObject ("Grid");
 		grid.transform.parent = hole.transform;
@@ -187,14 +193,14 @@ public class GameManager : MonoBehaviour {
 		hole.transform.position = new Vector3(potHoleStart+.5f, roadHeight, 0f);
 		Hole holeScript = hole.AddComponent<Hole> ();
 		hole.AddComponent<MeshRenderer> ();
-		int width = Random.Range (5, 10);
+		int width = Random.Range (4 + levelsClearedLog, 5 + levelsClearedLog);
 		holeScript.blockWidth = width;
 		for (int i = 0; i < width; i++) {
 			for (int k = 0; k < 15; k++) {
 				GameObject gridSquare = Instantiate (gridSpace, new Vector3 (hole.transform.position.x + i, hole.transform.position.y + 1 + k, 1), Quaternion.identity) as GameObject;
 				gridSquare.transform.parent = grid.transform;
 			}
-			int depth = Random.Range (2, 7);
+			int depth = Random.Range (2, 6);
 			for (int j = 0; j < depth; j++) {
 				GameObject holeSquare = Instantiate(holeSpace, new Vector3(hole.transform.position.x + i, hole.transform.position.y - j, 1), Quaternion.identity) as GameObject;
 				holeSquare.transform.parent = hole.transform;

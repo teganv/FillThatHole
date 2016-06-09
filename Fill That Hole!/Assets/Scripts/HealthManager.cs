@@ -79,7 +79,7 @@ public class HealthManager : MonoBehaviour {
 	}
 
 	public void UpdateHealthBar() {
-		healthBar.transform.localScale = new Vector3 (Mathf.Max(0, carHealth / 400), 1, 1); //takes the max of zero and the value so the health bar won't go negative
+		healthBar.transform.localScale = new Vector3 (Mathf.Max(0, carHealth / 300), 1, 1); //takes the max of zero and the value so the health bar won't go negative
 	}
 
 	public void incrementHoles() {

@@ -47,7 +47,7 @@ public class Car : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.CompareTag ("Nexthole")) {
-			speed += .12f;
+			speed += .095f;
 			speedUp = true;
 			healthManager.incrementHoles ();
 			Destroy (coll.gameObject);
