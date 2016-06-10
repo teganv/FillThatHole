@@ -24,7 +24,6 @@ public class PreviewBlock : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.CompareTag ("Ground") && coll.transform.parent != transform.parent) {
-			//StartCoroutine (Blink ());
 			StartCoroutine(BlinkOn());
 			rb.isKinematic = true;
 			hitBottom = true;
