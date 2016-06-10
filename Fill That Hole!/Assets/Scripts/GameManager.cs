@@ -40,8 +40,11 @@ public class GameManager : MonoBehaviour {
 	private MusicManager musicManager;
 	private HealthManager healthManager;
 
+	private int gameMode = 0; //0 = choosy, 1 = random
+
 
 	void Start() {
+		gameMode = PlayerPrefs.GetInt ("GameMode");
 		//Uncomment to reset high scores
 		//PlayerPrefs.DeleteAll ();
 		//for(int i = 0; i < 10; i ++) {
@@ -109,7 +112,7 @@ public class GameManager : MonoBehaviour {
 
 		Destroy (prevLevel);
 		prevLevel = level;
-		print ("Creating next hole");
+
 		foreach (Tetromino tetromino in FindObjectsOfType<Tetromino>()) {
 			Destroy (tetromino);
 		}
@@ -185,7 +188,6 @@ public class GameManager : MonoBehaviour {
 		int levelsClearedLog = 1;
 		if (holesCleared != 0)
 			levelsClearedLog = Mathf.CeilToInt(Mathf.Log(holesCleared, 2f));
-		print (levelsClearedLog.ToString ());
 		GameObject hole = new GameObject("Hole");
 		GameObject grid = new GameObject ("Grid");
 		grid.transform.parent = hole.transform;
@@ -220,6 +222,10 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject GetActiveHole() {
 		return activeHole;
+	}
+
+	public int GetGameMode() {
+		return gameMode;
 	}
 
 

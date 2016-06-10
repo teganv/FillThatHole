@@ -45,28 +45,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\FillSquadStartAnimation.cs" />
-     <Compile Include="Assets\Scripts\CameraRotator.cs" />
      <Compile Include="Assets\Scripts\CameraTargetHole.cs" />
      <Compile Include="Assets\Scripts\Car.cs" />
      <Compile Include="Assets\Scripts\ChassisColliderScript.cs" />
      <Compile Include="Assets\Scripts\Cloud.cs" />
-     <Compile Include="Assets\Scripts\ControlsScreenController.cs" />
-     <Compile Include="Assets\Scripts\DestroyOffScreen.cs" />
      <Compile Include="Assets\Scripts\DontDestroyOnLoad.cs" />
-     <Compile Include="Assets\Scripts\EndingScreenController.cs" />
+     <Compile Include="Assets\Scripts\FillSquadStartAnimation.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HealthManager.cs" />
      <Compile Include="Assets\Scripts\Hole.cs" />
+     <Compile Include="Assets\Scripts\Menus\CameraRotator.cs" />
+     <Compile Include="Assets\Scripts\Menus\ControlsScreenController.cs" />
+     <Compile Include="Assets\Scripts\Menus\EndingScreenController.cs" />
+     <Compile Include="Assets\Scripts\Menus\NameEntry.cs" />
+     <Compile Include="Assets\Scripts\Menus\SlideFromBlackAnimationDestroyer.cs" />
+     <Compile Include="Assets\Scripts\Menus\TitleLogo.cs" />
      <Compile Include="Assets\Scripts\MusicManager.cs" />
-     <Compile Include="Assets\Scripts\NameEntry.cs" />
      <Compile Include="Assets\Scripts\ParticleDestroyer.cs" />
+     <Compile Include="Assets\Scripts\PreviewBlock.cs" />
      <Compile Include="Assets\Scripts\Tetromino.cs" />
-     <Compile Include="Assets\Scripts\TitleScreenController.cs" />
      <Compile Include="Assets\Scripts\WheelRotator.cs" />
      <Compile Include="Assets\Scripts\Wiggler.cs" />
-     <Compile Include="Assets\SlideFromBlackAnimationDestroyer.cs" />
-     <Compile Include="Assets\TitleLogo.cs" />
      <None Include="Assets\UCLAGameLab\Wireframe\Shaders\UCLA GameLab Wireframe Functions.cginc" />
      <None Include="Assets\UCLAGameLab\Wireframe\Shaders\UCLA GameLab Wireframe.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />

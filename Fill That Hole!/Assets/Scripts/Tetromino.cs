@@ -18,9 +18,18 @@ public class Tetromino : MonoBehaviour {
 	private AudioSource source;
 	private AudioSource dirtHitSource;
 
+	private int gameMode = 0; //0 = choosy, 1 = random blocks
+
+	public GameObject previewBlock;
+	private GameObject preview;
+
+
+
 	// Use this for initialization
 	void Start () {
+		UpdatePreviewBlock ();
 		gameManager = GameObject.Find ("GameController").GetComponent<GameManager> ();
+		gameMode = gameManager.GetGameMode();
 		source = GetComponent<AudioSource> ();
 		rb = GetComponent<Rigidbody2D> ();
 		hole = gameManager.GetActiveHole().GetComponent<Hole>();
@@ -42,6 +51,7 @@ public class Tetromino : MonoBehaviour {
 					rb.MovePosition(new Vector3(transform.position.x - 1, transform.position.y, transform.position.z));
 					currentPosition--;
 				}
+				UpdatePreviewBlock ();
 			}
 			lastFrameHorizontalAxisValue = axisValue;
 
@@ -61,7 +71,8 @@ public class Tetromino : MonoBehaviour {
 			if (Input.GetButtonDown ("Turn") && !dropped) {
 				Vector3 rotation = new Vector3 (0, 0, -90f) * Input.GetAxisRaw ("Turn");
 				transform.Rotate (rotation, Space.World);
-				tetrominoPerson.GetComponent<Wiggler> ().UpdateRotationRanges (rotation);
+				tetrominoPerson.GetComponent<Wiggler> ().UpdateRotationRanges (rotation); //this does nothing right now
+				UpdatePreviewBlock ();
 			}		
 			if (Input.GetButtonDown("Shift")) {
 				GameObject newTetromino = gameManager.spawnNextTetromino (new Vector3(hole.transform.position.x + currentPosition, 8f, 0f));
@@ -69,6 +80,7 @@ public class Tetromino : MonoBehaviour {
 				newTetromino.transform.localRotation = transform.localRotation;
 				newTetromino.GetComponent<Tetromino> ().currentPosition = currentPosition;
 				Destroy(gameObject);
+				Destroy (preview);
 			}
 		} else {
 			GameObject newTetromino = gameManager.spawnSameTetromino (new Vector3 (hole.transform.position.x + currentPosition, 8f, 0f));
@@ -76,11 +88,13 @@ public class Tetromino : MonoBehaviour {
 			newTetromino.GetComponent<Tetromino> ().currentPosition = currentPosition;
 			newTetromino.transform.parent = gameManager.level.transform;
 			dirtHitSource.Play ();
+			Destroy (preview);
 			Destroy (this);
 		}
 	}
 
 	IEnumerator drop() {
+		Destroy (preview);
 		dropped = true;
 		source.pitch = Random.Range (.85f, 1.15f);
 		source.Play ();
@@ -105,6 +119,12 @@ public class Tetromino : MonoBehaviour {
 			if (parentTetromino != null)
 				parentTetromino.lockBlock ();
 		}
+	}
+
+	private void UpdatePreviewBlock() {
+		Destroy (preview);
+		preview = Instantiate (previewBlock, new Vector3( transform.position.x, transform.position.y - 1, transform.position.z), transform.rotation) as GameObject;
+		preview.transform.SetParent (transform);
 	}
 
 }

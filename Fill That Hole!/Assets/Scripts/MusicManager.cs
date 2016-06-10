@@ -8,7 +8,6 @@ public class MusicManager : MonoBehaviour {
 	GameObject otherSound;
 
 	private AudioSource source; //the source that plays the chant
-	public AudioClip FillThatHole, music;
 
 
 	void Awake()
