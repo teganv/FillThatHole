@@ -130,11 +130,11 @@ public class GameManager : MonoBehaviour {
 		groundAfterHole.transform.parent = level.transform;
 		groundAfterHole.name = "afterHoleGround";
 
-		drawLine (new Vector3 (startPoint, roadHeight, 0), new Vector3 (potHoleStart-.05f, roadHeight, 0), groundBeforeHole);
+		drawLine (new Vector3 (startPoint, roadHeight, -.6f), new Vector3 (potHoleStart-.05f, roadHeight, -.6f), groundBeforeHole);
 		GameObject hole = spawnHole();
 		hole.transform.parent = level.transform;
 		float holeEndX = potHoleStart + hole.GetComponent<Hole> ().blockWidth;
-		drawLine (new Vector3 (holeEndX, roadHeight, 0), new Vector3 (holeEndX + 13, roadHeight, 0), groundAfterHole);
+		drawLine (new Vector3 (holeEndX, roadHeight, -.6f), new Vector3 (holeEndX + 13, roadHeight, -.6f), groundAfterHole);
 		Camera.main.GetComponent<CameraTargetHole> ().SetTarget (hole.transform.position);
 
 		GameObject trigger = Instantiate (endTrigger, new Vector3(holeEndX + 7, roadHeight, 0), Quaternion.identity) as GameObject;
@@ -199,12 +199,12 @@ public class GameManager : MonoBehaviour {
 		holeScript.blockWidth = width;
 		for (int i = 0; i < width; i++) {
 			for (int k = 0; k < 15; k++) {
-				GameObject gridSquare = Instantiate (gridSpace, new Vector3 (hole.transform.position.x + i, hole.transform.position.y + 1 + k, 1), Quaternion.identity) as GameObject;
+				GameObject gridSquare = Instantiate (gridSpace, new Vector3 (hole.transform.position.x + i, hole.transform.position.y + 1 + k, .5f), Quaternion.identity) as GameObject;
 				gridSquare.transform.parent = grid.transform;
 			}
 			int depth = Random.Range (2, 6);
 			for (int j = 0; j < depth; j++) {
-				GameObject holeSquare = Instantiate(holeSpace, new Vector3(hole.transform.position.x + i, hole.transform.position.y - j, 1), Quaternion.identity) as GameObject;
+				GameObject holeSquare = Instantiate(holeSpace, new Vector3(hole.transform.position.x + i, hole.transform.position.y - j, .5f), Quaternion.identity) as GameObject;
 				holeSquare.transform.parent = hole.transform;
 			}
 			for (int k = depth; k < 7; k++) {

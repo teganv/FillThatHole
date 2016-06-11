@@ -60,14 +60,14 @@ public class HealthManager : MonoBehaviour {
 				}
 				for (int k = i; k < 10; k++) {
 					PlayerPrefs.SetInt ("score" + (k + 2).ToString (), curScores [k + 1]);
-					print("Setting score number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
+					//print("Setting score number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
 					PlayerPrefs.SetString ("score" + (k + 2).ToString () + "name", curNames [k + 1]);
-					print("Setting name number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
+					//print("Setting name number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
 				}
 				PlayerPrefs.SetInt ("score" + (i + 1).ToString (), holesCleared);
-				print("Setting new high score spot #" + (i + 2).ToString() + " to " + holesCleared.ToString());
+				//print("Setting new high score spot #" + (i + 2).ToString() + " to " + holesCleared.ToString());
 				PlayerPrefs.SetInt ("newScore", (i + 1)); 	//(this will be used to put the name in the right spot on the name entry screen)
-				print("Name number " + (i + 1).ToString() + " will be written over");
+				//print("Name number " + (i + 1).ToString() + " will be written over");
 				//nextScene = "HighScoreEntry";
 				nextScene = "HighScoreEntry";
 
