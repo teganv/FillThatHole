@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject holeSpace; //the sprites that fill the hole
 	public GameObject gridSpace; //transparent square to show grid in sky above hole
 	public GameObject ground; //the blocks that go at the bottom of the hole
-	public GameObject endTrigger, vroomCancelTrigger, tookDamageThisHoleResetTrigger;
+	public GameObject endTrigger, vroomCancelTrigger, tookDamageThisHoleResetTrigger, recoverTrigger;
 	public GameObject flatGround;
 	public GameObject titleLogo;
 	private TitleLogo logoScript;
@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour {
 
 		level = new GameObject ("Level" + healthManager.getHolesCleared ().ToString ()); 
 		Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
+		Instantiate (recoverTrigger, new Vector3 (startPoint + 5.5f, roadHeight, 0), Quaternion.identity);
 		GameObject sign = Instantiate (speedSign, new Vector3(startPoint + 15, roadHeight, 10), Quaternion.Euler(0, 0, Random.Range(-15, 15))) as GameObject;
 		sign.GetComponentsInChildren<TextMesh> () [1].text = (healthManager.getHolesCleared () + 1).ToString();
 		sign.transform.parent = level.transform;

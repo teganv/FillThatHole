@@ -30,7 +30,7 @@ public class CameraTargetHole : MonoBehaviour {
 
 	IEnumerator MoveIntoPlace() {
 		while (transform.position.x != target.x - 3.5f) {
-			transform.position = Vector3.MoveTowards (transform.position, new Vector3(target.x - 3.5f, 2.32f, -10), 18 * Time.deltaTime);
+			transform.position = Vector3.MoveTowards (transform.position, new Vector3(target.x - 3.5f, 2.32f, -10), 20 * Time.deltaTime);
 			yield return null;
 		}
 	}

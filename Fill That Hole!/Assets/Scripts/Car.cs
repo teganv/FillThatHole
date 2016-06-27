@@ -58,9 +58,15 @@ public class Car : MonoBehaviour {
 			print ("resetting took damage this hole");
 			healthManager.tookDamageThisHole = false;
 			Destroy (coll.gameObject);
-		}
-		else if (coll.CompareTag ("vroomCancel")) {
+		} else if (coll.CompareTag ("vroomCancel")) {
 			speedUp = false;
+			Destroy (coll.gameObject);
+		} else if (coll.CompareTag ("recover")) {
+			print ("recovering");
+			transform.rotation = Quaternion.identity;
+			transform.position = new Vector3 (transform.position.x, .5f, 0);
+			rb.velocity = new Vector2 (rb.velocity.x, 0);
+			rb.angularVelocity = 0;
 			Destroy (coll.gameObject);
 		}
 		else if (coll.CompareTag ("Nextflatground") && !gameManager.game) {
@@ -75,5 +81,7 @@ public class Car : MonoBehaviour {
 		particles.SetActive (true);
 		rb.velocity = new Vector2 (0f, 40f);
 	}
+
+
 
 }

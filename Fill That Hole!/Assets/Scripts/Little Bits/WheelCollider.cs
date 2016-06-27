@@ -16,7 +16,6 @@ public class WheelCollider : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		//parentRb.AddForce (new Vector2(0, 500f));
 		parentRb.angularVelocity = 0;
 		parentRb.velocity = new Vector2 (parentRb.velocity.x, 0);
 	}
