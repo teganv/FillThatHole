@@ -47,22 +47,24 @@ public class Car : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.CompareTag ("Nexthole")) {
+			gameManager.DisplayGoodFillText ();
+			healthManager.tookDamageThisHole = false;
 			speed += .095f;
 			speedUp = true;
 			healthManager.incrementHoles ();
-			Destroy (coll.gameObject);
-			//SceneManager.LoadScene (1);
-
 			gameManager.CreateNewLevel ();
-		}
-
-		else if (coll.CompareTag ("Nextflatground") && !gameManager.game) {
-			gameManager.CreateNewFlatGround ();
+			Destroy (coll.gameObject);
+		} else if (coll.CompareTag ("ResetTookDamageThisHole")) {
+			print ("resetting took damage this hole");
+			healthManager.tookDamageThisHole = false;
 			Destroy (coll.gameObject);
 		}
-
 		else if (coll.CompareTag ("vroomCancel")) {
 			speedUp = false;
+			Destroy (coll.gameObject);
+		}
+		else if (coll.CompareTag ("Nextflatground") && !gameManager.game) {
+			gameManager.CreateNewFlatGround ();
 			Destroy (coll.gameObject);
 		}
 	}

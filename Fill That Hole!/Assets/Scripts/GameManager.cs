@@ -9,19 +9,24 @@ public class GameManager : MonoBehaviour {
 	public GameObject holeSpace; //the sprites that fill the hole
 	public GameObject gridSpace; //transparent square to show grid in sky above hole
 	public GameObject ground; //the blocks that go at the bottom of the hole
-	public GameObject endTrigger, vroomCancelTrigger;
+	public GameObject endTrigger, vroomCancelTrigger, tookDamageThisHoleResetTrigger;
 	public GameObject flatGround;
 	public GameObject titleLogo;
 	private TitleLogo logoScript;
 	public GameObject healthBar;
 	public GameObject speedSign;
 	public GameObject controlsText;
+	public Text percentFilledText;
+	public Animator GoodFillTextParent, GoodFillTextChild;
+
 
 	public GameObject[] clouds;
 	public GameObject[] tetrominos;
 	public GameObject[] tetrominoPreviews;
 	public GameObject car;
 	public GameObject level = null; //holds the previous hole and all associated roads/tetrominos
+	public GameObject bumpCheck; //trigger that checks if a hole has been overfilled (thus preventing perfect fill bonuses)
+
 	public float roadHeight = -2f;
 
 	private int tetrominoIndex = 0;
@@ -35,16 +40,20 @@ public class GameManager : MonoBehaviour {
 	private float startPoint; //Where the previous level ended and where the next will begin
 
 	private GameObject activeHole; //the current hole
+	private Hole activeHoleScript;
 	private GameObject prevLevel; //keeps track of previous levels for deleting once they're off screen
 
 	private MusicManager musicManager;
 	private HealthManager healthManager;
+
+	private float percent;
 
 	private int gameMode = 0; //0 = choosy, 1 = random
 
 
 	void Start() {
 		gameMode = PlayerPrefs.GetInt ("GameMode");
+
 		//Uncomment to reset high scores
 		//PlayerPrefs.DeleteAll ();
 		//for(int i = 0; i < 10; i ++) {
@@ -61,15 +70,13 @@ public class GameManager : MonoBehaviour {
 		int numClouds = Random.Range (3, 8);
 
 		for (int i = 0; i < numClouds; i++) {
-			Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (-35, 30f), Random.Range (0f, 10f), Random.Range(5, 15)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+			GameObject cloud = (GameObject) Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (-35, 30f), Random.Range (2f, 10f), Random.Range(13, 20)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+			cloud.transform.localScale = cloud.transform.localScale * Random.Range (.5f, 1.05f);
 		}
 	}
 
 	void Update() {
 		if (Input.GetButtonDown ("Exit")) {
-			HealthManager healthManager = GameObject.Find ("HealthManager").GetComponent<HealthManager> ();
-			//healthManager.resetHolesCleared ();
-			//healthManager.resetHealth ();
 			SceneManager.LoadScene ("Main");
 		} else if (Input.GetButtonDown ("Vroom") && !game) {
 			controlsText.SetActive (false);
@@ -97,9 +104,9 @@ public class GameManager : MonoBehaviour {
 	public void CreateNewFlatGround() {
 		int numClouds = Random.Range (3, 6);
 		for (int i = 0; i < numClouds; i++) {
-			Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (startPoint, startPoint + 20), Random.Range (0f, 10f), Random.Range(5, 15)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+			GameObject cloud = (GameObject) Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (startPoint, startPoint + 20), Random.Range (2f, 10f), Random.Range(13, 20)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+			cloud.transform.localScale = cloud.transform.localScale * Random.Range (.5f, 1.05f);
 		}
-		print ("making new ground");
 		Instantiate (flatGround, new Vector3 (startPoint, roadHeight, 0), Quaternion.identity);
 		SetStartPoints (12);
 
@@ -119,7 +126,7 @@ public class GameManager : MonoBehaviour {
 
 		level = new GameObject ("Level" + healthManager.getHolesCleared ().ToString ()); 
 		Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
-		GameObject sign = Instantiate (speedSign, new Vector3(startPoint + 15, roadHeight, 3), Quaternion.Euler(0, 0, Random.Range(-15, 15))) as GameObject;
+		GameObject sign = Instantiate (speedSign, new Vector3(startPoint + 15, roadHeight, 10), Quaternion.Euler(0, 0, Random.Range(-15, 15))) as GameObject;
 		sign.GetComponentsInChildren<TextMesh> () [1].text = (healthManager.getHolesCleared () + 1).ToString();
 		sign.transform.parent = level.transform;
 
@@ -130,22 +137,23 @@ public class GameManager : MonoBehaviour {
 		groundAfterHole.transform.parent = level.transform;
 		groundAfterHole.name = "afterHoleGround";
 
-		drawLine (new Vector3 (startPoint, roadHeight, -.6f), new Vector3 (potHoleStart-.05f, roadHeight, -.6f), groundBeforeHole);
-		GameObject hole = spawnHole();
+		DrawLine (new Vector3 (startPoint, roadHeight, -.6f), new Vector3 (potHoleStart, roadHeight, -.6f), groundBeforeHole);
+		GameObject hole = SpawnHole();
 		hole.transform.parent = level.transform;
 		float holeEndX = potHoleStart + hole.GetComponent<Hole> ().blockWidth;
-		drawLine (new Vector3 (holeEndX, roadHeight, -.6f), new Vector3 (holeEndX + 13, roadHeight, -.6f), groundAfterHole);
+		DrawLine (new Vector3 (holeEndX, roadHeight, -.6f), new Vector3 (holeEndX + 13, roadHeight, -.6f), groundAfterHole);
 		Camera.main.GetComponent<CameraTargetHole> ().SetTarget (hole.transform.position);
 
 		GameObject trigger = Instantiate (endTrigger, new Vector3(holeEndX + 7, roadHeight, 0), Quaternion.identity) as GameObject;
 		trigger.transform.parent = level.transform;
-		GameObject startingTetromino = spawnSameTetromino (new Vector3 (hole.transform.position.x, 8f, 0f));
+		GameObject startingTetromino = SpawnSameTetromino (new Vector3 (hole.transform.position.x, 8f, 0f));
 		startingTetromino.transform.parent = level.transform;
 
 		int numClouds = Random.Range (3, 9);
 
 		for (int i = 0; i < numClouds; i++) {
-			Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (startPoint + 5, startPoint + 60), Random.Range (0f, 10f), Random.Range(5, 15)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+			GameObject cloud = (GameObject) Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (startPoint + 5, startPoint + 60), Random.Range (2f, 10f), Random.Range(13, 20)), Quaternion.Euler(new Vector3(270f, 0, 0)));
+			cloud.transform.localScale = cloud.transform.localScale * Random.Range (.5f, 1.05f);
 		}
 
 		SetStartPoints (46);
@@ -154,7 +162,7 @@ public class GameManager : MonoBehaviour {
 
 
 	//draws a line (from a stretched cube) between lineStart and lineEnd
-	private void drawLine (Vector3 lineStart, Vector3 lineEnd, GameObject line)
+	private void DrawLine (Vector3 lineStart, Vector3 lineEnd, GameObject line)
 	{
 		var posC = ((lineEnd - lineStart) * .5f) + lineStart;
 		posC = new Vector3 (posC.x, posC.y, 0);
@@ -165,11 +173,11 @@ public class GameManager : MonoBehaviour {
 			angleC = 0 - angleC;
 		}
 		line.transform.position = posC;
-		line.transform.localScale = new Vector3 (lengthC, 1f, 5f); //5f is the depth of the block
+		line.transform.localScale = new Vector3 (lengthC, 1f, 10f); //16f is the z depth of the block
 		line.transform.rotation = Quaternion.Euler (0, 0, angleC);
 	}
 
-	public GameObject spawnNextTetromino(Vector3 pos) {
+	public GameObject SpawnNextTetromino(Vector3 pos) {
 		tetrominoIndex++;
 		if (tetrominoIndex >= tetrominos.Length)
 			tetrominoIndex = 0;
@@ -177,13 +185,14 @@ public class GameManager : MonoBehaviour {
 		return newTetromino;
 	}
 
-	public GameObject spawnSameTetromino(Vector3 pos) {
+	public GameObject SpawnSameTetromino(Vector3 pos) {
 		GameObject newTetromino = Instantiate (tetrominos [tetrominoIndex], pos, Quaternion.identity) as GameObject;
 		return newTetromino;
 	}
 
 
-	public GameObject spawnHole() {
+	public GameObject SpawnHole() {
+		Instantiate (tookDamageThisHoleResetTrigger, new Vector3(potHoleStart, roadHeight, 0f), Quaternion.identity);
 		int holesCleared = healthManager.getHolesCleared ();
 		int levelsClearedLog = 1;
 		if (holesCleared != 0)
@@ -193,17 +202,20 @@ public class GameManager : MonoBehaviour {
 		grid.transform.parent = hole.transform;
 		hole.tag = "Hole";
 		hole.transform.position = new Vector3(potHoleStart+.5f, roadHeight, 0f);
-		Hole holeScript = hole.AddComponent<Hole> ();
+		activeHoleScript = hole.AddComponent<Hole> ();
 		hole.AddComponent<MeshRenderer> ();
 		int width = Random.Range (4 + levelsClearedLog, 5 + levelsClearedLog);
-		holeScript.blockWidth = width;
+		activeHoleScript.blockWidth = width;
 		for (int i = 0; i < width; i++) {
+			GameObject bumpChk = Instantiate (bumpCheck, new Vector3 (hole.transform.position.x + i, hole.transform.position.y + 1, .5f), Quaternion.identity) as GameObject;
+			bumpChk.transform.parent = hole.transform;
 			for (int k = 0; k < 15; k++) {
 				GameObject gridSquare = Instantiate (gridSpace, new Vector3 (hole.transform.position.x + i, hole.transform.position.y + 1 + k, .5f), Quaternion.identity) as GameObject;
 				gridSquare.transform.parent = grid.transform;
 			}
 			int depth = Random.Range (2, 6);
 			for (int j = 0; j < depth; j++) {
+				activeHoleScript.area++;
 				GameObject holeSquare = Instantiate(holeSpace, new Vector3(hole.transform.position.x + i, hole.transform.position.y - j, .5f), Quaternion.identity) as GameObject;
 				holeSquare.transform.parent = hole.transform;
 			}
@@ -226,6 +238,50 @@ public class GameManager : MonoBehaviour {
 
 	public int GetGameMode() {
 		return gameMode;
+	}
+
+	public void UpdatePercentFilled() {
+		StartCoroutine (UpdatePercentFilledCoroutine ());
+	}
+
+	private IEnumerator UpdatePercentFilledCoroutine() {
+		yield return 0;
+		//print ("GameManager count: " + activeHoleScript.filledArea.ToString () + "/" + activeHoleScript.area.ToString ());
+		percent = (float) 100 * ((float) activeHoleScript.filledArea / (float) activeHoleScript.area);
+		percentFilledText.text = percent.ToString("F1") + "% Filled";
+		if (activeHoleScript.hasBump) {
+			percentFilledText.text = "OVERFILLED";
+		}
+	}
+
+	public void DisplayGoodFillText() {
+		if (percent >= 70 && !healthManager.tookDamageThisHole) {
+			GoodFillTextParent.gameObject.SetActive (true);
+			GoodFillTextParent.gameObject.GetComponent<Text> ().text = "Good Fill!";
+			GoodFillTextChild.gameObject.GetComponent<Text> ().text = "Good Fill!";
+			healthManager.GainHealth (10);
+			if (percent >= 80) {
+				GoodFillTextParent.gameObject.GetComponent<Text> ().text = "GREAT Fill!";
+				GoodFillTextChild.gameObject.GetComponent<Text> ().text = "GREAT Fill!";
+				healthManager.GainHealth (10);
+				if (percent >= 90) {
+					GoodFillTextParent.gameObject.GetComponent<Text> ().text = "AWESOME FILL!";
+					GoodFillTextChild.gameObject.GetComponent<Text> ().text = "AWESOME FILL!";
+					healthManager.GainHealth (10);
+					if (percent == 100) {
+						GoodFillTextParent.gameObject.GetComponent<Text> ().text = "P E R F E C T  F I L L";
+						GoodFillTextChild.gameObject.GetComponent<Text> ().text = "P E R F E C T  F I L L";
+						healthManager.GainHealth (20);
+					}
+				}
+			}
+			GoodFillTextParent.gameObject.transform.rotation = Quaternion.identity;
+			GoodFillTextParent.Play ("GoodFillTextParent", -1, .01f);
+			GoodFillTextChild.Play ("GoodFillTextChild", -1, .01f);
+		}
+		print ("reset took damage this hole");
+		healthManager.tookDamageThisHole = false;
+
 	}
 
 

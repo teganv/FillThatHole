@@ -24,11 +24,11 @@ public class ChassisColliderScript : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		audioSource.pitch = Random.Range (.85f, 1.15f);
-		//parentRb.AddForce (new Vector2(0, 500f));
 		if (!justCollided) {
 			justCollided = true;
 			StartCoroutine (ResetCollisionTimer ());
 			parentRb.AddForce (new Vector2(0, 850f));
+			parentRb.AddTorque (-200f);
 			healthManager.loseHealth(Mathf.Min(coll.relativeVelocity.magnitude, 35f));
 		}
 		audioSource.PlayOneShot(crashClips[Random.Range(0, crashClips.Length)]);

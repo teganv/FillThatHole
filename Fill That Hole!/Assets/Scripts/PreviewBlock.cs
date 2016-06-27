@@ -11,7 +11,6 @@ public class PreviewBlock : MonoBehaviour {
 	void Start() {
 		rb = GetComponent<Rigidbody2D> ();
 		renderers = GetComponentsInChildren<MeshRenderer> ();
-		//rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
 	}
 

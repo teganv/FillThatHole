@@ -7,23 +7,24 @@ public class HealthManager : MonoBehaviour {
 
 	private AudioSource source;
 
-	public float carHealth = 400f;
+	public float carHealth;
+	private float carStartingHealth;
 	public bool alive = true;
+	public bool tookDamageThisHole = false;
 	public GameObject healthBar;
 
 	public GameObject slideToBlackAnim;
 
 	private int holesCleared = 0;
 
-	private Vector3 cameraStartRotation;
 	public Text holesClearedText;
 
 	private string nextScene = "End";
 
 
 	void Start () {
+		carStartingHealth = carHealth;
 		source = GetComponent<AudioSource> ();
-		cameraStartRotation = new Vector3 (Camera.main.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
 		UpdateHealthBar ();
 
 	}
@@ -31,19 +32,20 @@ public class HealthManager : MonoBehaviour {
 
 	public void loseHealth(float healthLost) {
 		carHealth -= healthLost;
+		tookDamageThisHole = true;
+		print ("took damage this hole");
 		UpdateHealthBar ();
 		if (carHealth <= 0f && alive) {
 			alive = false;
 			UpdateHighScores ();	
 			StartCoroutine (EndGame ());
-			//carHealth = 400;
-			//PlayerPrefs.SetInt ("Holes Cleared", holesCleared);
-			//SceneManager.LoadScene ("End");
-			//UpdateHighScores ();
-
 		}
-		//Shake health bar
 		StartCoroutine(shakeHealthBar(healthLost));
+	}
+
+	public void GainHealth(float healthGained) {
+		carHealth = Mathf.Min(carHealth + healthGained, carStartingHealth);
+		UpdateHealthBar ();
 	}
 
 	public void UpdateHighScores() {
@@ -60,22 +62,16 @@ public class HealthManager : MonoBehaviour {
 				}
 				for (int k = i; k < 10; k++) {
 					PlayerPrefs.SetInt ("score" + (k + 2).ToString (), curScores [k + 1]);
-					//print("Setting score number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
 					PlayerPrefs.SetString ("score" + (k + 2).ToString () + "name", curNames [k + 1]);
-					//print("Setting name number " + (k + 2).ToString() + " to " + curScores[k+1].ToString());
 				}
 				PlayerPrefs.SetInt ("score" + (i + 1).ToString (), holesCleared);
-				//print("Setting new high score spot #" + (i + 2).ToString() + " to " + holesCleared.ToString());
 				PlayerPrefs.SetInt ("newScore", (i + 1)); 	//(this will be used to put the name in the right spot on the name entry screen)
-				//print("Name number " + (i + 1).ToString() + " will be written over");
-				//nextScene = "HighScoreEntry";
 				nextScene = "HighScoreEntry";
 
 				highScoreFound = true;
 				break;
 			}
 		}
-		//holesCleared = 0;
 	}
 
 	public void UpdateHealthBar() {
