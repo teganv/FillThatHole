@@ -36,7 +36,7 @@ public class PreviewBlock : MonoBehaviour {
 			rndr.enabled = true;
 
 		yield return new WaitForSeconds (.4f);
-		StartCoroutine (BlinkOff ());
+		//StartCoroutine (BlinkOff ());
 	
 	}
 

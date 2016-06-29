@@ -68,7 +68,9 @@ public class Tetromino : MonoBehaviour {
 				}
 					
 				var DropAxis = Input.GetAxis ("Drop");
-				if (Mathf.Abs (DropAxis) > .7f) {
+				print (DropAxis.ToString ());
+				if (Mathf.Abs (DropAxis) > .9f) {
+					print ("droppping");
 					ableToTurn = false;
 					StopAllCoroutines ();
 					Drop ();
@@ -84,7 +86,7 @@ public class Tetromino : MonoBehaviour {
 					tetrominoPerson.GetComponent<Wiggler> ().UpdateRotationRanges (rotation); //this does nothing right now
 					UpdatePreviewBlock ();
 				}		
-				if (Input.GetButtonDown ("Shift")) {
+				if (Input.GetButtonDown ("Shift") && gameMode == 0) {
 					GameObject newTetromino = gameManager.SpawnNextTetromino (new Vector3 (hole.transform.position.x + currentPosition, 8f, 0f));
 					newTetromino.transform.parent = gameManager.level.transform;
 					newTetromino.transform.localRotation = transform.localRotation;
@@ -94,10 +96,18 @@ public class Tetromino : MonoBehaviour {
 				}
 			}
 		} else {
-			GameObject newTetromino = gameManager.SpawnSameTetromino (new Vector3 (hole.transform.position.x + currentPosition, 8f, 0f));
-			newTetromino.transform.localRotation = transform.localRotation;
-			newTetromino.GetComponent<Tetromino> ().currentPosition = currentPosition;
-			newTetromino.transform.parent = gameManager.level.transform;
+			if (gameMode == 0) {
+				GameObject newTetromino = gameManager.SpawnSameTetromino (new Vector3 (hole.transform.position.x + currentPosition, 8f, 0f));
+				newTetromino.transform.localRotation = transform.localRotation;
+				newTetromino.GetComponent<Tetromino> ().currentPosition = currentPosition;
+				newTetromino.transform.parent = gameManager.level.transform;
+			} else {
+				GameObject newTetromino = gameManager.RandomModeSpawnNextTetromino (new Vector3 (hole.transform.position.x + currentPosition, 8f, 0f));
+				newTetromino.transform.localRotation = transform.localRotation;
+				newTetromino.GetComponent<Tetromino> ().currentPosition = currentPosition;
+				newTetromino.transform.parent = gameManager.level.transform;
+			}
+
 			dirtHitSource.Play ();
 			Destroy (preview);
 			Destroy (this);

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject healthBar;
 	public GameObject speedSign;
 	public GameObject controlsText;
-	public Text percentFilledText;
+	public Text percentFilledText, nextBlockText;
 	public Animator GoodFillTextParent, GoodFillTextChild;
 
 
@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour {
 
 	private int tetrominoIndex = 0;
 	private int tetrominoPreviewIndex = 1;
+	private int randomModeNextTetrominoIndex;
+
+	public GameObject previewBlockPlaceholder; //a child of the camera, holds the position to spawn preview blocks
+	private Vector3 previewBlockSpawnPos;
 
 	public bool game = false;
 
@@ -48,12 +52,10 @@ public class GameManager : MonoBehaviour {
 
 	private float percent;
 
-	private int gameMode = 0; //0 = choosy, 1 = random
+	private int gameMode = 1; //0 = choosy, 1 = random
 
 
 	void Start() {
-		gameMode = PlayerPrefs.GetInt ("GameMode");
-
 		//Uncomment to reset high scores
 		//PlayerPrefs.DeleteAll ();
 		//for(int i = 0; i < 10; i ++) {
@@ -73,25 +75,33 @@ public class GameManager : MonoBehaviour {
 			GameObject cloud = (GameObject) Instantiate (clouds [Random.Range (0, clouds.Length - 1)], new Vector3 (Random.Range (-35, 30f), Random.Range (2f, 10f), Random.Range(13, 20)), Quaternion.Euler(new Vector3(270f, 0, 0)));
 			cloud.transform.localScale = cloud.transform.localScale * Random.Range (.5f, 1.05f);
 		}
+
+		randomModeNextTetrominoIndex = Random.Range (0, 7);
 	}
 
 	void Update() {
 		if (Input.GetButtonDown ("Exit")) {
 			SceneManager.LoadScene ("Main");
 		} else if (Input.GetButtonDown ("Vroom") && !game) {
-			controlsText.SetActive (false);
-			healthBar.SetActive (true);
-			logoScript.GetComponent<Animator>().SetBool("spin", true);
-			fillSquadStartAnimation.SetActive (true);
-			musicManager.playChant ();
-			SetStartPoints (-20);
-			game = true;
-			Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
-			CreateNewLevel ();
+			StartGame ();
 		}
 		if (Input.GetButtonDown ("Shift") && !game) {
 			SceneManager.LoadScene ("KeyboardControls");
 		}
+	}
+
+	private void StartGame() {
+		controlsText.SetActive (false);
+		healthBar.SetActive (true);
+		nextBlockText.gameObject.SetActive (true);
+		percentFilledText.gameObject.SetActive (true);
+		logoScript.GetComponent<Animator>().SetBool("spin", true);
+		fillSquadStartAnimation.SetActive (true);
+		musicManager.playChant ();
+		SetStartPoints (-20);
+		game = true;
+		Instantiate (vroomCancelTrigger, new Vector3 (startPoint + 2, roadHeight, 0), Quaternion.identity);
+		CreateNewLevel ();
 	}
 
 	private void SetStartPoints(int distance) {
@@ -147,8 +157,14 @@ public class GameManager : MonoBehaviour {
 
 		GameObject trigger = Instantiate (endTrigger, new Vector3(holeEndX + 7, roadHeight, 0), Quaternion.identity) as GameObject;
 		trigger.transform.parent = level.transform;
-		GameObject startingTetromino = SpawnSameTetromino (new Vector3 (hole.transform.position.x, 8f, 0f));
-		startingTetromino.transform.parent = level.transform;
+		if (gameMode == 0) {
+			GameObject startingTetromino = SpawnSameTetromino (new Vector3 (hole.transform.position.x, 8f, 0f));
+			startingTetromino.transform.parent = level.transform;
+		}
+		else if (gameMode == 1) {
+			GameObject startingTetromino = RandomModeSpawnNextTetromino (new Vector3 (hole.transform.position.x, 8f, 0f));
+			startingTetromino.transform.parent = level.transform;
+		}	
 
 		int numClouds = Random.Range (3, 9);
 
@@ -159,38 +175,6 @@ public class GameManager : MonoBehaviour {
 
 		SetStartPoints (46);
 	}
-
-
-
-	//draws a line (from a stretched cube) between lineStart and lineEnd
-	private void DrawLine (Vector3 lineStart, Vector3 lineEnd, GameObject line)
-	{
-		var posC = ((lineEnd - lineStart) * .5f) + lineStart;
-		posC = new Vector3 (posC.x, posC.y, 0);
-		var lengthC = (lineEnd - lineStart).magnitude;
-		var sineC = (lineEnd.y - lineStart.y) / lengthC;
-		var angleC = Mathf.Asin (sineC) * Mathf.Rad2Deg;
-		if (lineEnd.x < lineStart.x) {
-			angleC = 0 - angleC;
-		}
-		line.transform.position = posC;
-		line.transform.localScale = new Vector3 (lengthC, 1f, 10f); //16f is the z depth of the block
-		line.transform.rotation = Quaternion.Euler (0, 0, angleC);
-	}
-
-	public GameObject SpawnNextTetromino(Vector3 pos) {
-		tetrominoIndex++;
-		if (tetrominoIndex >= tetrominos.Length)
-			tetrominoIndex = 0;
-		GameObject newTetromino = Instantiate (tetrominos [tetrominoIndex], pos, Quaternion.identity) as GameObject;
-		return newTetromino;
-	}
-
-	public GameObject SpawnSameTetromino(Vector3 pos) {
-		GameObject newTetromino = Instantiate (tetrominos [tetrominoIndex], pos, Quaternion.identity) as GameObject;
-		return newTetromino;
-	}
-
 
 	public GameObject SpawnHole() {
 		Instantiate (tookDamageThisHoleResetTrigger, new Vector3(potHoleStart, roadHeight, 0f), Quaternion.identity);
@@ -233,6 +217,53 @@ public class GameManager : MonoBehaviour {
 		return hole;
 	}
 
+
+
+
+	//draws a line (from a stretched cube) between lineStart and lineEnd
+	private void DrawLine (Vector3 lineStart, Vector3 lineEnd, GameObject line)
+	{
+		var posC = ((lineEnd - lineStart) * .5f) + lineStart;
+		posC = new Vector3 (posC.x, posC.y, 0);
+		var lengthC = (lineEnd - lineStart).magnitude;
+		var sineC = (lineEnd.y - lineStart.y) / lengthC;
+		var angleC = Mathf.Asin (sineC) * Mathf.Rad2Deg;
+		if (lineEnd.x < lineStart.x) {
+			angleC = 0 - angleC;
+		}
+		line.transform.position = posC;
+		line.transform.localScale = new Vector3 (lengthC, 1f, 10f); //16f is the z depth of the block
+		line.transform.rotation = Quaternion.Euler (0, 0, angleC);
+	}
+
+	public GameObject SpawnNextTetromino(Vector3 pos) {
+		tetrominoIndex++;
+		if (tetrominoIndex >= tetrominos.Length)
+			tetrominoIndex = 0;
+		GameObject newTetromino = Instantiate (tetrominos [tetrominoIndex], pos, Quaternion.identity) as GameObject;
+		return newTetromino;
+	}
+
+	public GameObject SpawnSameTetromino(Vector3 pos) {
+		GameObject newTetromino = Instantiate (tetrominos [tetrominoIndex], pos, Quaternion.identity) as GameObject;
+		return newTetromino;
+	}
+
+	public GameObject RandomModeSpawnNextTetromino(Vector3 pos) {
+		GameObject newTetromino = Instantiate (tetrominos [randomModeNextTetrominoIndex], pos, Quaternion.identity) as GameObject;
+		randomModeNextTetrominoIndex = Random.Range (0, 7);
+		GameObject newTetrominoPreview = Instantiate (tetrominoPreviews [randomModeNextTetrominoIndex], previewBlockPlaceholder.transform.position, tetrominoPreviews [randomModeNextTetrominoIndex].transform.rotation) as GameObject;
+		newTetrominoPreview.transform.parent = Camera.main.transform;
+		newTetrominoPreview.name = "PREVIEWBLOCK";
+		Destroy (newTetrominoPreview.GetComponent<PreviewBlock> ());
+		Destroy (previewBlockPlaceholder);
+		previewBlockPlaceholder = newTetrominoPreview;
+
+		return newTetromino;
+	}
+
+
+
 	public GameObject GetActiveHole() {
 		return activeHole;
 	}
@@ -253,6 +284,10 @@ public class GameManager : MonoBehaviour {
 		if (activeHoleScript.hasBump) {
 			percentFilledText.text = "OVERFILLED";
 		}
+	}
+
+	private void UpdateNextBlockPreview() {
+
 	}
 
 	public void DisplayGoodFillText() {
